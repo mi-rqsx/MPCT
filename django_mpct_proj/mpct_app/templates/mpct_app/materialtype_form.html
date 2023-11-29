@@ -1,0 +1,15 @@
+<h1>Register a new material type</h1>
+<h2>Links:</h2>
+    <ul>
+        <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
+        <li><a href="{% url 'mpct_app:material_list_view' %}">List of registered materials</a></li>
+        <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
+        <li><a href="{% url 'mpct_app:institution_create_view' %}">Registere a new Institution</a></li>
+        <li><a href="{% url 'mpct_app:specifications_create_view' %}">Registere a new Specification</a></li>
+    </ul>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Register new material type">
+</form>

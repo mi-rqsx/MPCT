@@ -1,0 +1,20 @@
+<h1>List of materials</h1>
+<h2>Links:</h2>
+    <ul>
+        <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
+        <li><a href="{% url 'mpct_app:material_list_view' %}">List of registered materials</a></li>
+        <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
+        <li><a href="{% url 'mpct_app:institution_create_view' %}">Registere a new Institution</a></li>
+        <li><a href="{% url 'mpct_app:specifications_create_view' %}">Registere a new Specification</a></li>
+    </ul>
+<ul>
+    {% for material in material_list %}
+        <li> 
+            {{material.specification.institution}}-{{material.specification.id_number}} {{material.grade}} {{material.category}}      
+             
+        </li>
+    {% endfor %}
+</ul>
+
+
+
