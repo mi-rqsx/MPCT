@@ -1,0 +1,41 @@
+<h1>Material detail function based</h1>
+
+
+<h2>{{model_instance}}</h2>
+
+<h3>General info</h3>
+<form>
+    <ul>
+    {% for key, value in  field_value_dict_gen.items %}
+        <li>
+            <label for="{{key}}">{{key}}:</label>
+            <input type="text" id="{{key}}" value="{{value}}" readonly>
+        </li>
+    {% endfor %}
+    </ul>
+</form>
+
+<h3>Chemical properties</h3>
+<form>
+    <ul>
+    {% for key, value in  field_value_dict_chem.items %}
+        <li>
+            <label for="{{key}}">{{key}}:</label>
+            <input type="text" id="{{key}}" value="{{value}}" readonly>
+        </li>
+    {% endfor %}
+    </ul>
+</form>
+
+<h3>Mechanical properties</h3>
+<form>
+    <ul>
+    {% for key, value in  field_value_dict_mech.items %}
+        <li>
+            <label for="{{key}}">{{key}}:</label>
+            <input type="text" id="{{key}}" value="{{value}}" readonly>
+        </li>
+    {% endfor %}
+    </ul>
+</form>
+

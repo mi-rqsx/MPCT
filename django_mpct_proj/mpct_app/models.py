@@ -1,4 +1,6 @@
 from django.db import models
+import uuid
+
 
 # it is not a model, it's a base template to be inherited by other models (Meta abstract = True)
 class BaseChemistry(models.Model):
@@ -59,6 +61,10 @@ class BaseChemistry(models.Model):
     chem_w_max = models.DecimalField(verbose_name='Tungsten, max', max_digits=6, decimal_places=4, null=True, blank=True)
     chem_w_min = models.DecimalField(verbose_name='Tungsten, min', max_digits=6, decimal_places=4, null=True, blank=True)
 
+    chem_c_equivalent  = models.DecimalField(verbose_name='C Equivalent , max', max_digits=6, decimal_places=4, null=True, blank=True)
+
+
+
     class Meta:
         abstract = True
 
@@ -100,13 +106,28 @@ class BaseMechanical(models.Model):
     mech_hardness_max = models.IntegerField(verbose_name='Hardness, max', null=True, blank=True)
     mech_hardness_units = models.CharField(max_length=20, choices=HARDNESS_UNITS, default='HB', null=True, blank=True)
 
-    mech_toughness_min = models.IntegerField(verbose_name='Minimum', null=True, blank=True)
-    mech_toughness_mean = models.IntegerField(verbose_name='Average', null=True, blank=True)
+    mech_toughness_min = models.IntegerField(verbose_name='Impact Test, Minimum', null=True, blank=True)
+    mech_toughness_mean = models.IntegerField(verbose_name='Impact Test, Average', null=True, blank=True)
     mech_toughness_units = models.CharField(max_length=20, choices=TOUGHNESS_UNITS, default='J', null=True, blank=True)
     mech_toughness_size = models.CharField(max_length=20, choices=TOUGHNESS_SIZES, default='10x10', null=True, blank=True)
 
     class Meta:
         abstract = True
+
+
+class BaseSupplementary(models.Model):
+    supp_nace = models.BinaryField(verbose_name='NACE', null=True, blank=True) # add NACE spec
+    supp_hic = models.BinaryField(verbose_name='Supplementary HIC test', null=True, blank=True) # add NACE spec
+    supp_ddwt = models.BinaryField(verbose_name='Drop-Down Tear Test', null=True, blank=True) # add spec
+    supp_fpbt =  models.BinaryField(verbose_name='Four Point Bend test', null=True, blank=True) # add ASTM spec
+    supp_scct =  models.BinaryField(verbose_name='Stress Corrosion Cracking test', null=True, blank=True) # add ASTM spec
+    supp_mech_toughness_min = models.IntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
+    supp_mech_toughness_mean = models.IntegerField(verbose_name='Supplementary Impact Test, Aver.', null=True, blank=True)
+
+    class Meta:
+        abstract = True
+    
+
 
 #-----------------------------------------------------------------
 
@@ -121,6 +142,7 @@ class Specifications(models.Model):
     institution = models.ForeignKey('Institution', on_delete=models.RESTRICT) 
     id_number = models.CharField(max_length=100)
     title = models.CharField(max_length=300)
+    
 
     def __str__(self):
         return f"{self.institution} {self.id_number}"
@@ -132,7 +154,7 @@ class MaterialType(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class Material(BaseChemistry, BaseMechanical):
+class Material(BaseChemistry, BaseMechanical, BaseSupplementary):
     material_type = models.ForeignKey('MaterialType', on_delete=models.RESTRICT) 
     specification = models.ForeignKey('Specifications',on_delete=models.RESTRICT) # e.g., ASTM A516
     grade = models.CharField(max_length=100)
@@ -142,6 +164,20 @@ class Material(BaseChemistry, BaseMechanical):
         abstract = False
 
     def __str__(self) :
-        return f"{self.material.specification.institution}-{self.material.specification.id_number} {self.material.grade} {self.material.category}"
+        return f"{self.specification.institution} {self.specification.id_number} {self.grade} {self.category}"
 
-   
+
+
+class Certificate(BaseChemistry, BaseMechanical):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4)
+    po = models.CharField(max_length=100)
+    heat_number = models.CharField(max_length=100, unique=True)
+    material = models.ForeignKey('Material', on_delete=models.RESTRICT)
+
+
+
+
+    
+
+    def __str__(self) :
+        return f"{self.heat_number}, {self.material.specification.institution} {self.material.specification.id_number} {self.material.grade} {self.material.category}"
