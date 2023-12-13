@@ -1,13 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import  ListView, CreateView, DetailView
 from django.urls import reverse_lazy
-from mpct_app.models import Material, MaterialType, Institution, Specifications
+from mpct_app.models import Material, MaterialType, Specification, Certificate
+from .forms import CerificateForm
 
 
 # Create your views here.
 def home_view(request):
     return render (request, 'mpct_app/home.html')
-
 
 
 # List of registered materials
@@ -33,18 +34,10 @@ class MaterialTypeCreateView(CreateView):
     success_url = reverse_lazy('mpct_app:home_view') 
 
 
-# Page for registration of new institution
-class InstitutionCreateView(CreateView):
-    model = Institution
-    fields = "__all__"
-    success_url = reverse_lazy('mpct_app:home_view') 
-
-
-class SpecificationsCreateView(CreateView):
-    model = Specifications
+class SpecificationCreateView(CreateView):
+    model = Specification
     fields = "__all__"
     success_url = reverse_lazy('mpct_app:home_view')
-
 
 
 class MaterialDetailView(DetailView):
@@ -57,10 +50,11 @@ def MaterialDetailViewFunc(request, pk):
 
     # returns a tuple of all fields as objects like (<django.db.models.fields.BigAutoField: id>, ...)
     all_fields_tuple = Material._meta.get_fields()
+    # print(f"all_fields_tuple:\n{all_fields_tuple}\n\n-----------")
 
     # converts each field object into a string and then appends each string to a list by using a list comprehension
     field_value_list = [str(each_field) for each_field in all_fields_tuple]
-
+    # print(f"field_value_list:\n{field_value_list}\n\n-----------")
     # field_value_dict_all = { item.split('.')[-1] : str(getattr(model_instance, item.split('.')[-1])) for item in field_value_list if str(getattr(model_instance, item.split('.')[-1])) != 'None'}
 
     field_value_dict_gen = {}
@@ -68,15 +62,20 @@ def MaterialDetailViewFunc(request, pk):
     field_value_dict_mech = {}
 
     for item in field_value_list:
-        my_key = item.split('.')[-1]
-        my_value = str(getattr(model_instance, my_key))
-        if my_value != 'None':
-            if 'chem_' in my_key:
-                field_value_dict_chem[my_key] = my_value
-            elif 'mech_' in my_key:
-                field_value_dict_mech[my_key] = my_value
-            else:
-                field_value_dict_gen[my_key] = my_value
+        if ">" in item:
+            pass
+        else:
+            my_key = item.split('.')[-1]
+            # print(f"my_key:\n{my_key}\n\n-----------")
+            my_value = str(getattr(model_instance, my_key))
+            # print(f"my_value:\n{my_value}\n\n-----------")
+            if my_value != 'None':
+                if 'chem_' in my_key:
+                    field_value_dict_chem[my_key] = my_value
+                elif 'mech_' in my_key:
+                    field_value_dict_mech[my_key] = my_value
+                else:
+                    field_value_dict_gen[my_key] = my_value
 
     data = {
         'model_instance': model_instance,
@@ -88,3 +87,19 @@ def MaterialDetailViewFunc(request, pk):
     }
 
     return render(request, 'mpct_app/material_detail_func.html', context=data)
+
+
+
+
+def CertificateCreateView(request):
+
+    # POST REQUEST --> CHECK FORM CONTENT --> THANK YOU
+    if request.method == 'POST':
+        form = CerificateForm(request.POST)
+        if form.is_valid(): # if fields are filled out correctly.
+            print(form.cleaned_data)
+            return redirect(reverse('mpct_app:home_view')) # where thank_you is the name we assigned in urls.py
+    # ELSE, RENDER FORM
+    else:
+        form = CerificateForm()
+    return render(request, 'mpct_app/certificate_form.html', context = {'form': form})

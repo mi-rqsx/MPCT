@@ -4,18 +4,16 @@
         <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
         <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
         <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
-        <li><a href="{% url 'mpct_app:institution_create_view' %}">Register a new Institution</a></li>
-        <li><a href="{% url 'mpct_app:specifications_create_view' %}">Register a new Specification</a></li>
+        <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
     </ul>
 <ul>
     {% for instance in material_list %}
         <li> 
-            {{instance.specification.institution}} {{instance.specification.id_number}} {{instance.grade}} {{instance.category}}
+            {{instance.specification}} {{instance.grade}} {{instance.category}}
             <ul>
                 <li><a href="/mpct/material_detail/{{instance.id}}">View Details</a></li>
                 <li><a href="/mpct/material_detail_func/{{instance.id}}">View Details Function based</a></li>
             </ul>
-             
         </li>
     {% endfor %}
 </ul>

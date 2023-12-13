@@ -1,69 +1,68 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 import uuid
 
 
 # it is not a model, it's a base template to be inherited by other models (Meta abstract = True)
 class BaseChemistry(models.Model):
     chem_c_max = models.DecimalField(verbose_name='Carbon, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_c_min = models.DecimalField(verbose_name='Carbon, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_c_min = models.DecimalField(verbose_name='Carbon, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_mn_max = models.DecimalField(verbose_name='Manganese, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_mn_min = models.DecimalField(verbose_name='Manganese, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_mn_min = models.DecimalField(verbose_name='Manganese, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_si_max = models.DecimalField(verbose_name='Silicon, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_si_min = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_si_min = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_p_max = models.DecimalField(verbose_name='Phosphorus, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_p_min = models.DecimalField(verbose_name='Phosphorus, min', max_digits=6, decimal_places=4, null=True)
+    chem_p_min = models.DecimalField(verbose_name='Phosphorus, min', max_digits=6, decimal_places=4, null=True, validators=[MinValueValidator(0)])
 
     chem_s_max = models.DecimalField(verbose_name='Sulfur max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_s_min = models.DecimalField(verbose_name='Sulfur min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_s_min = models.DecimalField(verbose_name='Sulfur min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_ni_max = models.DecimalField(verbose_name='Nickel, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_ni_min = models.DecimalField(verbose_name='Nickel, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_ni_min = models.DecimalField(verbose_name='Nickel, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_cr_max = models.DecimalField(verbose_name='Chromium, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_cr_min = models.DecimalField(verbose_name='Chromium, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_cr_min = models.DecimalField(verbose_name='Chromium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_cu_max = models.DecimalField(verbose_name='Copper, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_cu_min = models.DecimalField(verbose_name='Copper, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_cu_min = models.DecimalField(verbose_name='Copper, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_al_max = models.DecimalField(verbose_name='Aluminum, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_al_min = models.DecimalField(verbose_name='Aluminum, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_al_min = models.DecimalField(verbose_name='Aluminum, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_v_max = models.DecimalField(verbose_name='Vanadium, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_v_min = models.DecimalField(verbose_name='Vanadium, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_v_min = models.DecimalField(verbose_name='Vanadium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_nb_max = models.DecimalField(verbose_name='Niobium, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_nb_min = models.DecimalField(verbose_name='Niobium, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_nb_min = models.DecimalField(verbose_name='Niobium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_mo_max = models.DecimalField(verbose_name='Molybdenum, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_mo_min = models.DecimalField(verbose_name='Molybdenum, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_mo_min = models.DecimalField(verbose_name='Molybdenum, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_ti_max = models.DecimalField(verbose_name='Titanium, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_ti_min = models.DecimalField(verbose_name='Titanium, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_ti_min = models.DecimalField(verbose_name='Titanium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_b_max = models.DecimalField(verbose_name='Boron, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_b_min = models.DecimalField(verbose_name='Boron, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_b_min = models.DecimalField(verbose_name='Boron, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_n_max = models.DecimalField(verbose_name='Nitrogen, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_n_min = models.DecimalField(verbose_name='Nitrogen, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_n_min = models.DecimalField(verbose_name='Nitrogen, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_ca_max = models.DecimalField(verbose_name='Calcium, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_ca_min = models.DecimalField(verbose_name='Calcium, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_ca_min = models.DecimalField(verbose_name='Calcium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_co_max = models.DecimalField(verbose_name='Cobalt, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_co_min = models.DecimalField(verbose_name='Cobalt, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_co_min = models.DecimalField(verbose_name='Cobalt, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_fe_max = models.DecimalField(verbose_name='Iron, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_fe_min = models.DecimalField(verbose_name='Iron, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_fe_min = models.DecimalField(verbose_name='Iron, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_w_max = models.DecimalField(verbose_name='Tungsten, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_w_min = models.DecimalField(verbose_name='Tungsten, min', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_w_min = models.DecimalField(verbose_name='Tungsten, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_c_equivalent  = models.DecimalField(verbose_name='C Equivalent , max', max_digits=6, decimal_places=4, null=True, blank=True)
-
-
 
     class Meta:
         abstract = True
@@ -127,25 +126,14 @@ class BaseSupplementary(models.Model):
     class Meta:
         abstract = True
     
-
-
 #-----------------------------------------------------------------
 
-class Institution(models.Model):
-    name = models.CharField(max_length=200) # ASTM, ASME, GOST, BS EN etc...
+class Specification(models.Model):
+    name = models.CharField(max_length=200) # ASTM A516, ASME SA-516, GOST 1050, BS EN etc...
+    title = models.CharField(max_length=300)
 
     def __str__(self):
         return f"{self.name}"
-
-
-class Specifications(models.Model):
-    institution = models.ForeignKey('Institution', on_delete=models.RESTRICT) 
-    id_number = models.CharField(max_length=100)
-    title = models.CharField(max_length=300)
-    
-
-    def __str__(self):
-        return f"{self.institution} {self.id_number}"
 
 
 class MaterialType(models.Model):
@@ -156,28 +144,28 @@ class MaterialType(models.Model):
 
 class Material(BaseChemistry, BaseMechanical, BaseSupplementary):
     material_type = models.ForeignKey('MaterialType', on_delete=models.RESTRICT) 
-    specification = models.ForeignKey('Specifications',on_delete=models.RESTRICT) # e.g., ASTM A516
+    specification = models.ForeignKey('Specification',on_delete=models.RESTRICT) # e.g., ASTM A516
     grade = models.CharField(max_length=100)
     category = models.CharField(verbose_name='Class or Category', max_length=100, null=True, blank=True)
 
     class Meta:
         abstract = False
 
-    def __str__(self) :
-        return f"{self.specification.institution} {self.specification.id_number} {self.grade} {self.category}"
+    def __str__(self):
+        if self.category:
+            return f"{self.specification.name} {self.grade} {self.category}"
+        else:
+             return f"{self.specification.name} {self.grade}"
 
 
-
-class Certificate(BaseChemistry, BaseMechanical):
+class Certificate(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4)
-    po = models.CharField(max_length=100)
+    user = models.CharField(max_length=200, null=True) # needs to be changed to MS account data when deployed in Azure
+    po = models.CharField(max_length=100) # you need to create a logic that provides option for user to leave this field empty. However, NULL=False.
     heat_number = models.CharField(max_length=100, unique=True)
-    material = models.ForeignKey('Material', on_delete=models.RESTRICT)
-
-
-
-
+    manufacturer = models.CharField(max_length=200, null=True)
+    date = models.DateTimeField(auto_now=True) # sets the field to now when the object is saved, auto_now_add=True: sets the field to now when the object is created.
+    material = models.ForeignKey('Material', on_delete=models.RESTRICT) # probably, it's worth to change "on_delete" to something that allows to save old data, and NULL new data
     
-
     def __str__(self) :
-        return f"{self.heat_number}, {self.material.specification.institution} {self.material.specification.id_number} {self.material.grade} {self.material.category}"
+        return f"{self.heat_number}, {self.material.specification} {self.material.grade} {self.material.category}"
