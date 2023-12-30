@@ -15,6 +15,9 @@
     </ul>
 </form>
 
+
+
+{% if  field_value_dict_chem %}
 <h3>Chemical properties</h3>
 <form>
     <ul>
@@ -26,7 +29,11 @@
     {% endfor %}
     </ul>
 </form>
+{% endif %}
 
+
+
+{% if  field_value_dict_mech %}
 <h3>Mechanical properties</h3>
 <form>
     <ul>
@@ -38,4 +45,19 @@
     {% endfor %}
     </ul>
 </form>
+{% endif %}
 
+
+{% if  field_value_dict_supp %}
+<h3>Supplementary properties</h3>
+<form>
+    <ul>
+    {% for key, value in  field_value_dict_supp.items %}
+        <li>
+            <label for="{{key}}">{{key}}:</label>
+            <input type="text" id="{{key}}" value="{{value}}" readonly>
+        </li>
+    {% endfor %}
+    </ul>
+</form>
+{% endif %}

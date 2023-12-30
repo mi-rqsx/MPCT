@@ -1,0 +1,18 @@
+<h1>Select what material you wanna check</h1>
+<h2>Links:</h2>
+    <ul>
+        <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
+        <li><a href="{% url 'mpct_app:material_list_view' %}">List of registered materials</a></li>
+        <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
+        <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
+    </ul>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    
+
+
+    

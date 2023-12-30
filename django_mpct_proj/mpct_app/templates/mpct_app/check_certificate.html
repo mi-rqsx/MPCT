@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPCT</title>
+</head>
+<body>
+    <h1>Check certificate</h1>
+
+    <div>
+        <p>Links:</p>
+        <ul>
+            <li><a href="{% url 'mpct_app:material_list_view' %}">List of registered materials</a></li>
+            <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
+            <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
+            <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
+        </ul>
+    </div>
+
+
+<div>
+    <form action="">
+
+
+    <div>
+        {% for field in form %}
+            {% if "chem_" not in field.name and "mech_" not in field.name and "supp_" not in field.name %}
+                <p>
+                    {{field.label_tag}} {{field}}
+                </p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+
+    <div>
+        {% for field in form %}
+            {% if "min" not in field.name %}
+                {% for key, value in material_dict.items %}
+                    {% if key == field.name %}
+                        {% if value is not None %}
+                            <p>
+                                {{field.label_tag}} {{field}}
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+
+    </form>
+
+</div>
+

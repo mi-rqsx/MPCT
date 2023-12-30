@@ -11,7 +11,16 @@ urlpatterns = [
     path('material_type_create', views.MaterialTypeCreateView.as_view(), name='material_type_create_view'),
     path('specification_create', views.SpecificationCreateView.as_view(), name='specification_create_view'),
     path('material_detail/<int:pk>', views.MaterialDetailView.as_view(), name='material_detail'),
-    path('check_certificate', views.CertificateCreateView, name='check_certificate_view'),
+    path('check_certificate/<str:grade>/<int:pk>', views.check_certificate_view, name='check_certificate'),
 ]
+
+
+
+"""
+urlpatterns = [
+    path('material/', material_view, name='material_view'),
+    path('ajax/load-materials/', load_materials, name='ajax_load_materials'),
+]
+"""
 
 

@@ -1,65 +1,65 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 import uuid
 
 
 # it is not a model, it's a base template to be inherited by other models (Meta abstract = True)
 class BaseChemistry(models.Model):
-    chem_c_max = models.DecimalField(verbose_name='Carbon, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_c_max = models.DecimalField(verbose_name='Carbon, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_c_min = models.DecimalField(verbose_name='Carbon, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_mn_max = models.DecimalField(verbose_name='Manganese, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_mn_max = models.DecimalField(verbose_name='Manganese, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_mn_min = models.DecimalField(verbose_name='Manganese, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_si_max = models.DecimalField(verbose_name='Silicon, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_si_min = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_si_max = models.DecimalField(verbose_name='Silicon, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_si_min = models.DecimalField(verbose_name='Silicon, min',max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_p_max = models.DecimalField(verbose_name='Phosphorus, max', max_digits=6, decimal_places=4, null=True, blank=True)
-    chem_p_min = models.DecimalField(verbose_name='Phosphorus, min', max_digits=6, decimal_places=4, null=True, validators=[MinValueValidator(0)])
+    chem_p_max = models.DecimalField(verbose_name='Phosphorus, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_p_min = models.DecimalField(verbose_name='Phosphorus, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_s_max = models.DecimalField(verbose_name='Sulfur max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_s_max = models.DecimalField(verbose_name='Sulfur max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_s_min = models.DecimalField(verbose_name='Sulfur min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_ni_max = models.DecimalField(verbose_name='Nickel, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_ni_max = models.DecimalField(verbose_name='Nickel, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_ni_min = models.DecimalField(verbose_name='Nickel, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_cr_max = models.DecimalField(verbose_name='Chromium, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_cr_max = models.DecimalField(verbose_name='Chromium, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_cr_min = models.DecimalField(verbose_name='Chromium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_cu_max = models.DecimalField(verbose_name='Copper, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_cu_max = models.DecimalField(verbose_name='Copper, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_cu_min = models.DecimalField(verbose_name='Copper, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_al_max = models.DecimalField(verbose_name='Aluminum, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_al_max = models.DecimalField(verbose_name='Aluminum, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_al_min = models.DecimalField(verbose_name='Aluminum, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_v_max = models.DecimalField(verbose_name='Vanadium, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_v_max = models.DecimalField(verbose_name='Vanadium, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_v_min = models.DecimalField(verbose_name='Vanadium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_nb_max = models.DecimalField(verbose_name='Niobium, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_nb_max = models.DecimalField(verbose_name='Niobium, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_nb_min = models.DecimalField(verbose_name='Niobium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_mo_max = models.DecimalField(verbose_name='Molybdenum, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_mo_max = models.DecimalField(verbose_name='Molybdenum, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_mo_min = models.DecimalField(verbose_name='Molybdenum, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_ti_max = models.DecimalField(verbose_name='Titanium, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_ti_max = models.DecimalField(verbose_name='Titanium, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_ti_min = models.DecimalField(verbose_name='Titanium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_b_max = models.DecimalField(verbose_name='Boron, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_b_max = models.DecimalField(verbose_name='Boron, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_b_min = models.DecimalField(verbose_name='Boron, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_n_max = models.DecimalField(verbose_name='Nitrogen, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_n_max = models.DecimalField(verbose_name='Nitrogen, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_n_min = models.DecimalField(verbose_name='Nitrogen, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_ca_max = models.DecimalField(verbose_name='Calcium, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_ca_max = models.DecimalField(verbose_name='Calcium, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_ca_min = models.DecimalField(verbose_name='Calcium, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_co_max = models.DecimalField(verbose_name='Cobalt, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_co_max = models.DecimalField(verbose_name='Cobalt, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_co_min = models.DecimalField(verbose_name='Cobalt, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_fe_max = models.DecimalField(verbose_name='Iron, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_fe_max = models.DecimalField(verbose_name='Iron, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_fe_min = models.DecimalField(verbose_name='Iron, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
-    chem_w_max = models.DecimalField(verbose_name='Tungsten, max', max_digits=6, decimal_places=4, null=True, blank=True)
+    chem_w_max = models.DecimalField(verbose_name='Tungsten, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_w_min = models.DecimalField(verbose_name='Tungsten, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
     chem_c_equivalent  = models.DecimalField(verbose_name='C Equivalent , max', max_digits=6, decimal_places=4, null=True, blank=True)
@@ -96,17 +96,17 @@ class BaseMechanical(models.Model):
         ('2.5x10', '2.5x10'),
         )
 
-    mech_tensile_strength_max = models.IntegerField(verbose_name='TS, max')
-    mech_tensile_strength_min = models.IntegerField(verbose_name='TS, min')
-    mech_yield_strength_max = models.IntegerField(verbose_name='YS, max')
-    mech_yield_strength_min = models.IntegerField(verbose_name='YS, min')
-    mech_strength_units = models.CharField(max_length=20, choices=STRESS_UNITS, default='MPa')
+    mech_tensile_strength_max = models.PositiveIntegerField(verbose_name='TS, max', null=True, blank=True)
+    mech_tensile_strength_min = models.PositiveIntegerField(verbose_name='TS, min', null=True, blank=True)
+    mech_yield_strength_max = models.PositiveIntegerField(verbose_name='YS, max', null=True, blank=True)
+    mech_yield_strength_min = models.PositiveIntegerField(verbose_name='YS, min', null=True, blank=True)
+    mech_strength_units = models.CharField(max_length=20, choices=STRESS_UNITS, default='MPa', null=True, blank=True)
 
-    mech_hardness_max = models.IntegerField(verbose_name='Hardness, max', null=True, blank=True)
+    mech_hardness_max = models.PositiveIntegerField(verbose_name='Hardness, max', null=True, blank=True)
     mech_hardness_units = models.CharField(max_length=20, choices=HARDNESS_UNITS, default='HB', null=True, blank=True)
 
-    mech_toughness_min = models.IntegerField(verbose_name='Impact Test, Minimum', null=True, blank=True)
-    mech_toughness_mean = models.IntegerField(verbose_name='Impact Test, Average', null=True, blank=True)
+    mech_toughness_min = models.PositiveIntegerField(verbose_name='Impact Test, Minimum', null=True, blank=True)
+    mech_toughness_mean = models.PositiveIntegerField(verbose_name='Impact Test, Average', null=True, blank=True)
     mech_toughness_units = models.CharField(max_length=20, choices=TOUGHNESS_UNITS, default='J', null=True, blank=True)
     mech_toughness_size = models.CharField(max_length=20, choices=TOUGHNESS_SIZES, default='10x10', null=True, blank=True)
 
@@ -117,11 +117,11 @@ class BaseMechanical(models.Model):
 class BaseSupplementary(models.Model):
     supp_nace = models.BinaryField(verbose_name='NACE', null=True, blank=True) # add NACE spec
     supp_hic = models.BinaryField(verbose_name='Supplementary HIC test', null=True, blank=True) # add NACE spec
-    supp_ddwt = models.BinaryField(verbose_name='Drop-Down Tear Test', null=True, blank=True) # add spec
+    supp_dwtt = models.BinaryField(verbose_name='Drop Weight  Tear Test', null=True, blank=True) # add spec
     supp_fpbt =  models.BinaryField(verbose_name='Four Point Bend test', null=True, blank=True) # add ASTM spec
-    supp_scct =  models.BinaryField(verbose_name='Stress Corrosion Cracking test', null=True, blank=True) # add ASTM spec
-    supp_mech_toughness_min = models.IntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
-    supp_mech_toughness_mean = models.IntegerField(verbose_name='Supplementary Impact Test, Aver.', null=True, blank=True)
+    supp_ssc =  models.BinaryField(verbose_name='Sulfide Stress Corrosion test', null=True, blank=True) # add ASTM spec
+    supp_mech_toughness_min = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
+    supp_mech_toughness_mean = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Aver.', null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -146,26 +146,24 @@ class Material(BaseChemistry, BaseMechanical, BaseSupplementary):
     material_type = models.ForeignKey('MaterialType', on_delete=models.RESTRICT) 
     specification = models.ForeignKey('Specification',on_delete=models.RESTRICT) # e.g., ASTM A516
     grade = models.CharField(max_length=100)
-    category = models.CharField(verbose_name='Class or Category', max_length=100, null=True, blank=True)
 
     class Meta:
         abstract = False
 
     def __str__(self):
-        if self.category:
-            return f"{self.specification.name} {self.grade} {self.category}"
-        else:
-             return f"{self.specification.name} {self.grade}"
+        return f"{self.specification} Gr. {self.grade}"
 
 
-class Certificate(models.Model):
+class Certificate(BaseChemistry, BaseMechanical, BaseSupplementary):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4)
     user = models.CharField(max_length=200, null=True) # needs to be changed to MS account data when deployed in Azure
     po = models.CharField(max_length=100) # you need to create a logic that provides option for user to leave this field empty. However, NULL=False.
-    heat_number = models.CharField(max_length=100, unique=True)
+    heat_number = models.CharField(max_length=100) # unique=True
     manufacturer = models.CharField(max_length=200, null=True)
     date = models.DateTimeField(auto_now=True) # sets the field to now when the object is saved, auto_now_add=True: sets the field to now when the object is created.
     material = models.ForeignKey('Material', on_delete=models.RESTRICT) # probably, it's worth to change "on_delete" to something that allows to save old data, and NULL new data
     
     def __str__(self) :
-        return f"{self.heat_number}, {self.material.specification} {self.material.grade} {self.material.category}"
+        return f"{self.heat_number}, {self.material}"
+    
+

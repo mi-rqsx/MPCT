@@ -1,0 +1,6 @@
+1. Your Certificate model has the same meta base templates, which pass min and max chemistry values.
+    I decided to use max field for storing reported certificate values.
+    It means that the view page must rename max to a different name in order not to confuse users
+
+
+2. 
