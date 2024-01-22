@@ -9,17 +9,18 @@ class SelectSpecificationForm(forms.ModelForm):
 
 
 class CheckCertificate(forms.ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     self.cert_fields = kwargs.pop("cert_fields", None)
-    #     super(CheckCertificate, self).__init__(*args, **kwargs)
-
     class Meta:
         model = Certificate
         fields = "__all__"
+        widgets = {
+            'id': forms.HiddenInput(),
+            'material': forms.TextInput(attrs={'disabled': 'disabled'})
+        }
 
     def __init__(self, *args, **kwargs):
         super(CheckCertificate, self).__init__(*args, **kwargs)
-        self.fields['chem_c_max'].label = "Carbon, C:"
+        self.fields['id'].label = ""
+        self.fields['chem_c_max'].label = "Carbon, C"
         self.fields['chem_mn_max'].label = "Manganese, Mn"
         self.fields['chem_si_max'].label = "Silicon, Si"
         self.fields['chem_p_max'].label = "Phosphorus, P"
@@ -42,9 +43,7 @@ class CheckCertificate(forms.ModelForm):
 
         self.fields['mech_tensile_strength_max'].label = "Tensile Strength"
         self.fields['mech_yield_strength_max'].label = "Yield Strength"
-        self.fields['mech_hardness_max'].label = "Hardness"
-
-        self.fields['mech_toughness_min'].label = "Impact Test Results"
+        # self.fields['mech_hardness_max'].label = "Hardness"
 
 
         # for field_name in self.fields:
@@ -53,4 +52,5 @@ class CheckCertificate(forms.ModelForm):
         #         field = self.fields[field_name]
         #         field.label = field_name_list[1]
 
-    # labels =
+class SerchHeatForm(forms.Form):
+    s_heat_number = forms.CharField(label = 'Search for heat number:')

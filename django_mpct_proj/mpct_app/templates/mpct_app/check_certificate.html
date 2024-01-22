@@ -19,7 +19,8 @@
 
 
 <div>
-    <form action="">
+    <form action="" method="POST">
+    {% csrf_token %}
 
 
     <div>
@@ -49,6 +50,7 @@
         {% endfor %}
     </div>
 
+    <input type="submit">
 
     </form>
 

@@ -1,6 +1,6 @@
+import uuid
 from django.db import models
 from django.core.validators import MinValueValidator
-import uuid
 
 
 # it is not a model, it's a base template to be inherited by other models (Meta abstract = True)
@@ -105,7 +105,7 @@ class BaseMechanical(models.Model):
     mech_hardness_max = models.PositiveIntegerField(verbose_name='Hardness, max', null=True, blank=True)
     mech_hardness_units = models.CharField(max_length=20, choices=HARDNESS_UNITS, default='HB', null=True, blank=True)
 
-    mech_toughness_min = models.PositiveIntegerField(verbose_name='Impact Test, Minimum', null=True, blank=True)
+    mech_toughness_single = models.PositiveIntegerField(verbose_name='Impact Test, Minimum', null=True, blank=True)
     mech_toughness_mean = models.PositiveIntegerField(verbose_name='Impact Test, Average', null=True, blank=True)
     mech_toughness_units = models.CharField(max_length=20, choices=TOUGHNESS_UNITS, default='J', null=True, blank=True)
     mech_toughness_size = models.CharField(max_length=20, choices=TOUGHNESS_SIZES, default='10x10', null=True, blank=True)
@@ -120,7 +120,7 @@ class BaseSupplementary(models.Model):
     supp_dwtt = models.BinaryField(verbose_name='Drop Weight  Tear Test', null=True, blank=True) # add spec
     supp_fpbt =  models.BinaryField(verbose_name='Four Point Bend test', null=True, blank=True) # add ASTM spec
     supp_ssc =  models.BinaryField(verbose_name='Sulfide Stress Corrosion test', null=True, blank=True) # add ASTM spec
-    supp_mech_toughness_min = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
+    supp_mech_toughness_single = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
     supp_mech_toughness_mean = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Aver.', null=True, blank=True)
 
     class Meta:
@@ -159,11 +159,16 @@ class Certificate(BaseChemistry, BaseMechanical, BaseSupplementary):
     user = models.CharField(max_length=200, null=True) # needs to be changed to MS account data when deployed in Azure
     po = models.CharField(max_length=100) # you need to create a logic that provides option for user to leave this field empty. However, NULL=False.
     heat_number = models.CharField(max_length=100) # unique=True
-    manufacturer = models.CharField(max_length=200, null=True)
+    manufacturer = models.CharField(max_length=200)
     date = models.DateTimeField(auto_now=True) # sets the field to now when the object is saved, auto_now_add=True: sets the field to now when the object is created.
     material = models.ForeignKey('Material', on_delete=models.RESTRICT) # probably, it's worth to change "on_delete" to something that allows to save old data, and NULL new data
+    acceptance_status = models.BooleanField()
+    comment = models.TextField(blank=True)
     
     def __str__(self) :
         return f"{self.heat_number}, {self.material}"
+    
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in Certificate._meta.fields]
     
 

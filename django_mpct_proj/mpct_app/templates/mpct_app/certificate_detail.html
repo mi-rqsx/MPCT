@@ -1,0 +1,24 @@
+<h1>Certificate for {{model_instance.material}} heat number {{model_instance.heat_number}}</h1>
+
+
+<h2>{{model_instance}}</h2>
+
+<div>
+    <table border=1>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+        </tr>
+    {% for key, value in  model_instance_dict.items %}
+        {% if value == None %}
+        {% else %}
+            <tr>
+                <td>{{key}}</td> 
+                <td>{{value}}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </table>
+
+</div>
+

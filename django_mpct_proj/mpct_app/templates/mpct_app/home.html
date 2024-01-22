@@ -1,10 +1,14 @@
 <html lang="en">
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPCT</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="{% static 'custom.css' %}" rel="stylesheet">
 </head>
-<body>
+<body class="container">
     <h1>Material properties check tool (MPCT)</h1>
 
     <div>
@@ -14,33 +18,59 @@
             <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
             <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
             <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
+            <li><a href="{% url 'mpct_app:certificate_list_view' %}">List of Certificates</a></li>
         </ul>
     </div>
 
-    <div>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Filter">
-        </form>
+    
+
+    <form>
+        {% csrf_token %}
+        {% load widget_tweaks %}
+        {% for field in search_heat_form %}
+        <div class="form-group">
+          {{ field.errors }}
+          {{ field.label_tag }}
+          {% render_field field class="form-control" %}
+        </div>
+        {% endfor %}
+      </form>
+
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {% render_field field class="form-control" %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Filter">
+    </form>
         
-    </div>
-
-
+    <div id="search_results"></div>
 
     <div>
         <ul>
             {% for material in materials  %}
-
                 <li><a href="/mpct/check_certificate/{{material.specification.name}}__Gr{{material.grade}}/{{material.id}}">Сheck certificate for {{material}}</a></li>
-
             {% endfor %}
         </ul>
     </div>
     
 
 
-    
+
+
+
+
+
+
+
+
+
+
 
 
 

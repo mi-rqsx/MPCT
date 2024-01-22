@@ -1,26 +1,22 @@
-<h1>List of materials</h1>
+<h1>List of Certificates</h1>
 <h2>Links:</h2>
     <ul>
         <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
         <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
         <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
         <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
-        <li><a href="{% url 'mpct_app:certificate_list_view' %}">List of Certificates</a></li>
     </ul>
 
 
 
 
 <ul>
-    {% for material in material_list %}
+    {% for cert in certificate_list %}
         <li> 
-            {{material}}
+            {{cert}}
             <ul>
-                <li><a href="/mpct/material_detail_func/{{material.id}}">View Details of the {{material}}</a></li>
+                <li><a href="/mpct/certificate_detail/{{cert.id}}">View Details of the cert with the heat # {{cert}}</a></li>
             </ul>
         </li>
     {% endfor %}
 </ul>
-
-
-

@@ -1,96 +1,80 @@
-from gc import disable
+from django import forms
 from django.forms import model_to_dict
+from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
-from .models import Material, MaterialType, Specification
-from .forms import SelectSpecificationForm, CheckCertificate
+from .models import Material, MaterialType, Specification, Certificate
+from .forms import SelectSpecificationForm, CheckCertificate, SerchHeatForm
 
 
 def home_view(request):
+    materials = Material.objects.all()
+    form = SelectSpecificationForm()
+    search_heat_form = SerchHeatForm()
+    
     if request.method == "POST":
-        form = SelectSpecificationForm(request.POST)
+        form = SelectSpecificationForm(request.POST) # get data from the form
         if form.is_valid():
             value = form.cleaned_data["specification"]
             print(value)
-            materials = Material.objects.filter(
-                specification=value
-            ).all()  # show filtered materilas based selected spec
-    else:
-        form = SelectSpecificationForm()
-        materials = Material.objects.all()  # show all list of materials
+            materials = Material.objects.filter(specification=value).all()  # show filtered materilas based selected spec
+    
+    context = {
+        'form': form,
+        'search_heat_form': search_heat_form,
+        'materials': materials,
+    }
+    
+    return render(request, "mpct_app/home.html", context=context)
 
-    return render(request, "mpct_app/home.html", {"form": form, "materials": materials})
+def search_heat_number(request):
+    search_heat_form = SerchHeatForm(request.GET)
+    if search_heat_form.is_valid():
+        input_heat_num = search_heat_form.cleaned_data['s_heat_number']
+        certs = Certificate.objects.filter(heat_number__icontains=input_heat_num)
+        certs_list = list(certs.values())  # Convert QuerySet to list of dicts
+        print(certs)
+        return JsonResponse(certs_list, safe=False)
+    return JsonResponse({'error':'Not able to validate form'})
+    
 
 
 
 
 
 
-
-
-
-
-
-def check_certificate_view(request, grade, pk):
+def check_certificate_view(request, pk, grade=False):
     material = Material.objects.get(pk=pk)
+
+    # I need this dict to be able to filter the form where all inherited fields the
+    # same names of which in the material instance have values of None
     material_dict = model_to_dict(material)
     # print(material_dict)
 
-    form = CheckCertificate()
-    print(f"   ppppppppp  {form['heat_number'].name}")
+    # this form is filtered on HTML side to show only origin Certificate attributes (not inherited)
+    # form = CheckCertificate()
 
+    if request.method == 'POST':
+        form = CheckCertificate(request.POST)
+        if form.is_valid():
 
-    # for f in form:
-    #     print(f'f starts: \n\n\n {f} \n\n\n f ends')
-
-    # make a form for a particular instance:
-    material_form = CheckCertificate(instance=material)
-
-    
-    for field in material_form:
-        field_name = field.name
-        field_name_list = field_name.split(',')
-        if ', max' in field_name:
-            material_form[field_name].field.widget.attrs = {'value': field_name_list[0]}
-
-    
-    # for key, value in material_dict.items():
-    #     if value is None:
-    # #         # material_form[key].label = None
-    # #         # material_form[key].field.widget_attrs({'type': 'hidden'})
-    # #         # material_form[key].field.widget.attrs = {'disabled': 'disabled'}
-    # #         # {'type': 'hidden'}
-    #         pass
-
-
-
-    # for key, value in material_dict.items():
-    #     for field in form:
-    #         # print(f'  [key]     {form[key].name}')
-    #         if key == form[key].name:
-    #             if value is not None:
-    #                     print('IT WORKED')
-    #                     print(form[key].label_tag)
-    #                     print(form[key])
+            # here, I will put a logic to compare cert values with the material specification
+            # as for now, I just save the cert results without checking them. 
+            # BUT this logic better to provide on a client side (JavaScript). 
+            # because, based on this logic, the only acceptance_status filed should be changed without 
+            # reloading of page (ibn order not to lose inputs)
+            print(f'\n\n\n {form.cleaned_data} \n\n\n ')
+            form.save()
+    else:
+        form = CheckCertificate(initial={'material': f'{material.specification} {material.grade}'}) # material field is disabled in forms.py
 
     context = {
-        'form': form,
-        'material_form': material_form,
-        'material': material,
-        'material_dict': material_dict,
-    }
-
+            "form": form,
+            "material_dict": material_dict,
+        }
+    
     return render(request, "mpct_app/check_certificate.html", context=context)
-
-
-
-
-
-
-
-
-
 
 
 # List of registered materials
@@ -99,6 +83,25 @@ class MaterialListView(ListView):
     model = Material
     # queryset = Material.objects.order_by('Specification') # you can use queryset
     context_object_name = "material_list"
+
+
+class CertificateListView(ListView):
+    # this view class will look through html files (templates) to find the pattern name model_list.html (material_list.html)
+    model = Certificate
+    # queryset = Material.objects.order_by('Specification') # you can use queryset
+    context_object_name = "certificate_list"
+
+
+def certificate_detail_view(request, pk):
+    model_instance = Certificate.objects.get(pk=pk)
+
+    # make separate dict objects for mech, chem and general parameters as you did for material detail
+    data = {
+        'model_instance_dict': model_to_dict(model_instance),
+        'model_instance': model_instance,
+    }
+
+    return render(request, "mpct_app/certificate_detail.html", context=data)
 
 
 # Page for registration of new material and its requirements
@@ -124,34 +127,22 @@ class SpecificationCreateView(CreateView):
     success_url = reverse_lazy("mpct_app:home_view")
 
 
-class MaterialDetailView(DetailView):
-    # returns only one instance (material) from Material model
-    model = Material
-
-
-def MaterialDetailViewFunc(request, pk):
+def material_detail_view(request, pk):
     model_instance = Material.objects.get(pk=pk)
 
     # returns a tuple of all fields as objects like (<django.db.models.fields.BigAutoField: id>, ...)
     all_fields_tuple = Material._meta.get_fields()
-    # print(f'all_fields_tuple: \n {all_fields_tuple} \n \n')
-    # print(f"all_fields_tuple:\n{all_fields_tuple}\n\n-----------")
 
     # converts each field object into a string and then appends each string to a list by using a list comprehension
     field_value_list = [str(each_field) for each_field in all_fields_tuple]
-    # print(f'field_value_list: \n {field_value_list} \n \n')
-    # print(f"field_value_list:\n{field_value_list}\n\n-----------")
-    # field_value_dict_all = { item.split('.')[-1] : str(getattr(model_instance, item.split('.')[-1])) for item in field_value_list if str(getattr(model_instance, item.split('.')[-1])) != 'None'}
-
+    
     field_value_dict_gen = {}
     field_value_dict_chem = {}
     field_value_dict_mech = {}
     field_value_dict_supp = {}
 
     for item in field_value_list:
-        if ">" in item:
-            pass
-        else:
+        try:
             my_key = item.split(".")[-1]
             # print(f"my_key:\n{my_key}\n\n-----------")
             my_value = str(getattr(model_instance, my_key))
@@ -165,11 +156,11 @@ def MaterialDetailViewFunc(request, pk):
                     field_value_dict_supp[my_key] = my_value
                 else:
                     field_value_dict_gen[my_key] = my_value
+        except AttributeError as e:
+            print(f'\n\n\n Exception: {e} END \n\n\n')
+
 
     data = {
-        # 'model_instance': model_instance,
-        # 'all_fields_tuple': all_fields_tuple,
-        # 'field_value_list': field_value_list,
         "field_value_dict_gen": field_value_dict_gen,  # I use this dict in html
         "field_value_dict_chem": field_value_dict_chem,
         "field_value_dict_mech": field_value_dict_mech,
@@ -179,6 +170,10 @@ def MaterialDetailViewFunc(request, pk):
     return render(
         request, "mpct_app/material_detail_func.html", context=data
     )  # in HTML: {% for key, value in  field_value_dict_gen.items %}
+
+
+
+
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++
