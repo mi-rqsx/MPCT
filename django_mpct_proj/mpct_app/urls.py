@@ -12,7 +12,7 @@ urlpatterns = [
     path('certificate_list', views.CertificateListView.as_view(), name='certificate_list_view'),
     path('certificate_detail/<str:pk>', views.certificate_detail_view, name='certificate_detail_view'),
 
-    path('material_create', views.MaterialCreateView.as_view(), name='material_create_view'),
+    path('register_material', views.register_material, name='register_material'),
     path('material_type_create', views.MaterialTypeCreateView.as_view(), name='material_type_create_view'),
     path('specification_create', views.SpecificationCreateView.as_view(), name='specification_create_view'),
 

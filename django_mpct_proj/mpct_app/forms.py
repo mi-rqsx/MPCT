@@ -54,3 +54,9 @@ class CheckCertificate(forms.ModelForm):
 
 class SerchHeatForm(forms.Form):
     s_heat_number = forms.CharField(label = 'Search for heat number:')
+
+
+class RegisterMaterialForm(forms.ModelForm):
+    class Meta:
+        model = Material
+        fields = "__all__"

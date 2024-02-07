@@ -1,22 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
 <h1>List of Certificates</h1>
-<h2>Links:</h2>
-    <ul>
-        <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
-        <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
-        <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
-        <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
-    </ul>
-
-
-
 
 <ul>
     {% for cert in certificate_list %}
         <li> 
             {{cert}}
-            <ul>
+            {% comment %} <ul>
                 <li><a href="/mpct/certificate_detail/{{cert.id}}">View Details of the cert with the heat # {{cert}}</a></li>
-            </ul>
+            </ul> {% endcomment %}
         </li>
     {% endfor %}
 </ul>
+{% endblock %} 

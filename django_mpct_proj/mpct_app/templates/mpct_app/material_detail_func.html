@@ -1,5 +1,8 @@
-<h1>Material detail function based</h1>
+{% extends "base.html" %}
+{% load static %}
 
+{% block content %}
+<h1>Material detail function based</h1>
 
 <h2>{{model_instance}}</h2>
 
@@ -61,3 +64,6 @@
     </ul>
 </form>
 {% endif %}
+
+
+{% endblock %} 

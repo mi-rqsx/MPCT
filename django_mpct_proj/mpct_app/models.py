@@ -62,6 +62,12 @@ class BaseChemistry(models.Model):
     chem_w_max = models.DecimalField(verbose_name='Tungsten, max', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
     chem_w_min = models.DecimalField(verbose_name='Tungsten, min', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
 
+    chem_summ_nb_v_max = models.DecimalField(verbose_name='Nb + V', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_summ_nb_ti_v_max = models.DecimalField(verbose_name='Nb+Ti+V', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_summ_cr_cu_mo_max = models.DecimalField(verbose_name='Cr+Cu+Mo', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_summ_ni_cr_mo_cu_max = models.DecimalField(verbose_name='Ni+Cr+Mo+Cu', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+    chem_summ_cr_mo_max = models.DecimalField(verbose_name='Cr+Mo', max_digits=6, decimal_places=4, null=True, blank=True, validators=[MinValueValidator(0)])
+
     chem_c_equivalent  = models.DecimalField(verbose_name='C Equivalent , max', max_digits=6, decimal_places=4, null=True, blank=True)
 
     class Meta:
@@ -132,6 +138,10 @@ class Specification(models.Model):
     name = models.CharField(max_length=200) # ASTM A516, ASME SA-516, GOST 1050, BS EN etc...
     title = models.CharField(max_length=300)
 
+    class Meta:
+        db_table = 'Specification'
+        verbose_name = 'Specification'
+
     def __str__(self):
         return f"{self.name}"
 
@@ -149,6 +159,7 @@ class Material(BaseChemistry, BaseMechanical, BaseSupplementary):
 
     class Meta:
         abstract = False
+        
 
     def __str__(self):
         return f"{self.specification} Gr. {self.grade}"
@@ -170,5 +181,3 @@ class Certificate(BaseChemistry, BaseMechanical, BaseSupplementary):
     
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Certificate._meta.fields]
-    
-

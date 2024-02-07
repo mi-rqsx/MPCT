@@ -1,14 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
 <h1>List of materials</h1>
-<h2>Links:</h2>
-    <ul>
-        <li><a href="{% url 'mpct_app:home_view' %}">Home</a></li>
-        <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
-        <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
-        <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
-        <li><a href="{% url 'mpct_app:certificate_list_view' %}">List of Certificates</a></li>
-    </ul>
-
-
 
 
 <ul>
@@ -22,5 +18,4 @@
     {% endfor %}
 </ul>
 
-
-
+{% endblock %} 

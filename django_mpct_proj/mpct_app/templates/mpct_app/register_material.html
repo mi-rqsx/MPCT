@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<h1>Register a new material and its requirements</h1>
+
+
+<form method="POST">
+{% csrf_token %}
+{% comment %} <div class="container text-center"> {% endcomment %}
+    <div class="row align-items-start text-center">
+            
+                <div class="col">
+                    <h2>Chemistry</h2>
+                    <div>
+                        <h3>Chem form data</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Parameter</th>
+                                        <th scope="col">Value</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for field in form %}
+                                    {% if "chem_" in field.name %}
+                                        <tr>      
+                                            <td>{{field.label_tag}}</td>
+                                            <td>{{field}}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>    
+                    </div>
+                </div>
+
+                <div class="col">
+                    <h2>Mechanical</h2>
+                    <div>
+                        <h3>Chem form data</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for field in form %}
+                                {% if "mech_" in field.name or "supp_" in field.name%}
+                                    <tr>      
+                                        <td>{{field.label_tag}}</td>
+                                        <td>{{field}}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table> 
+                    </div>
+                </div>
+            
+        <input type="submit" value="Register new material">
+        
+    </div>
+  {% comment %} </div> {% endcomment %}
+
+</form>
+
+{% endblock %} 
+
+
+
+
+<!--
+    <form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        {% if "specific_text" in field.name %}
+            
+            <div class="special-field">
+                {{ field.label_tag }} {{ field }}
+            </div>
+        {% else %}
+
+            <div class="field">
+                {{ field.label_tag }} {{ field }}
+            </div>
+        {% endif %}
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+
+-->

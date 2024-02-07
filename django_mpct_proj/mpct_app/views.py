@@ -5,28 +5,31 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 from .models import Material, MaterialType, Specification, Certificate
-from .forms import SelectSpecificationForm, CheckCertificate, SerchHeatForm
+from .forms import SelectSpecificationForm, CheckCertificate, SerchHeatForm, RegisterMaterialForm
 
 
 def home_view(request):
     materials = Material.objects.all()
     form = SelectSpecificationForm()
-    search_heat_form = SerchHeatForm()
-    
+    search_heat_form = SerchHeatForm() # move it the base template
+
+    # you need to make detailed form with select ond option things making dropdown list
     if request.method == "POST":
         form = SelectSpecificationForm(request.POST) # get data from the form
+        
         if form.is_valid():
             value = form.cleaned_data["specification"]
             print(value)
             materials = Material.objects.filter(specification=value).all()  # show filtered materilas based selected spec
-    
+
     context = {
         'form': form,
         'search_heat_form': search_heat_form,
         'materials': materials,
     }
-    
+
     return render(request, "mpct_app/home.html", context=context)
+
 
 def search_heat_number(request):
     search_heat_form = SerchHeatForm(request.GET)
@@ -37,11 +40,6 @@ def search_heat_number(request):
         print(certs)
         return JsonResponse(certs_list, safe=False)
     return JsonResponse({'error':'Not able to validate form'})
-    
-
-
-
-
 
 
 def check_certificate_view(request, pk, grade=False):
@@ -73,7 +71,7 @@ def check_certificate_view(request, pk, grade=False):
             "form": form,
             "material_dict": material_dict,
         }
-    
+
     return render(request, "mpct_app/check_certificate.html", context=context)
 
 
@@ -104,16 +102,6 @@ def certificate_detail_view(request, pk):
     return render(request, "mpct_app/certificate_detail.html", context=data)
 
 
-# Page for registration of new material and its requirements
-class MaterialCreateView(CreateView):
-    model = Material
-    fields = "__all__"
-    # it will automaticaly save the data like .save()
-    success_url = reverse_lazy(
-        "mpct_app:material_list_view"
-    )  # I think, that default redirection is DetailView, But I want to redirect the user to the list of materials
-
-
 # Page for registration of new material types (pipe, fitting...)
 class MaterialTypeCreateView(CreateView):
     model = MaterialType
@@ -125,6 +113,25 @@ class SpecificationCreateView(CreateView):
     model = Specification
     fields = "__all__"
     success_url = reverse_lazy("mpct_app:home_view")
+
+# Page for registration of new material and its requirements
+class MaterialCreateView(CreateView):
+    model = Material
+    fields = "__all__"
+    # it will automaticaly save the data like .save()
+    success_url = reverse_lazy(
+        "mpct_app:material_list_view"
+    )  # I think, that default redirection is DetailView, But I want to redirect the user to the list of materials
+
+
+def register_material(request):
+    form = RegisterMaterialForm()
+    context = {
+        'form': form,
+    }
+    return render(request, "mpct_app/register_material.html", context=context)
+    # in HTML: {% for key, value in  field_value_dict_gen.items %}
+
 
 
 def material_detail_view(request, pk):

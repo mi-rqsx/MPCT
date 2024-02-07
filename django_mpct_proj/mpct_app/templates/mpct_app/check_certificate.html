@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,17 +11,6 @@
 </head>
 <body>
     <h1>Check certificate</h1>
-
-    <div>
-        <p>Links:</p>
-        <ul>
-            <li><a href="{% url 'mpct_app:material_list_view' %}">List of registered materials</a></li>
-            <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
-            <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
-            <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
-        </ul>
-    </div>
-
 
 <div>
     <form action="" method="POST">
@@ -56,3 +50,4 @@
 
 </div>
 
+{% endblock %} 

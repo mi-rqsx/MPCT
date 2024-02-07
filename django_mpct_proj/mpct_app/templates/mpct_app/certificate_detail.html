@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
 <h1>Certificate for {{model_instance.material}} heat number {{model_instance.heat_number}}</h1>
 
 
@@ -21,4 +26,4 @@
     </table>
 
 </div>
-
+{% endblock %} 

@@ -1,78 +1,34 @@
-<html lang="en">
+{% extends "base.html" %}
 {% load static %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPCT</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link href="{% static 'custom.css' %}" rel="stylesheet">
-</head>
-<body class="container">
+
+{% block content %}
     <h1>Material properties check tool (MPCT)</h1>
 
-    <div>
-        <p>Links:</p>
-        <ul>
-            <li><a href="{% url 'mpct_app:material_list_view' %}">List of registered materials</a></li>
-            <li><a href="{% url 'mpct_app:material_create_view' %}">Register a new material and its requirements</a></li>
-            <li><a href="{% url 'mpct_app:material_type_create_view' %}">Register a new material type</a></li>
-            <li><a href="{% url 'mpct_app:specification_create_view' %}">Register a new Specification</a></li>
-            <li><a href="{% url 'mpct_app:certificate_list_view' %}">List of Certificates</a></li>
-        </ul>
-    </div>
-
-    
-
-    <form>
+    <form method="post" class="dropdown">
         {% csrf_token %}
-        {% load widget_tweaks %}
-        {% for field in search_heat_form %}
-        <div class="form-group">
-          {{ field.errors }}
-          {{ field.label_tag }}
-          {% render_field field class="form-control" %}
-        </div>
-        {% endfor %}
-      </form>
-
-
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
-                {{ field.errors }}
-                {{ field.label_tag }}
-                {% render_field field class="form-control" %}
-            </div>
-        {% endfor %}
-        <input type="submit" value="Filter">
-    </form>
-        
-    <div id="search_results"></div>
-
-    <div>
-        <ul>
-            {% for material in materials  %}
-                <li><a href="/mpct/check_certificate/{{material.specification.name}}__Gr{{material.grade}}/{{material.id}}">Сheck certificate for {{material}}</a></li>
+        <select name="{{ form.specification.name }}" class="btn btn-secondary dropdown-toggle">
+            <option class="dropdown-item">Select Specification</option>
+            {% for value, display in form.specification.field.choices %}
+                {% if value %}
+                    <option class="dropdown-item" value="{{ value }}">{{ display }}</option>
+                {% endif %}
             {% endfor %}
-        </ul>
+        </select>
+        <input class="btn btn-secondary" type="submit" value="Filter">
+    </form>
+
+
+    <div class="list-group list-group-flush">
+        {% for material in materials  %}
+            <a href="/mpct/check_certificate/{{material.specification.name}}__Gr{{material.grade}}/{{material.id}}" class="list-group-item list-group-item-action">Сheck certificate for {{material}}</a>
+        {% endfor %}
+
     </div>
-    
+
+
+{% endblock %} 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
-</html>
