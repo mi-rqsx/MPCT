@@ -8,9 +8,9 @@
 
     <form method="post" class="dropdown">
         {% csrf_token %}
-        <select name="{{ form.specification.name }}" class="btn btn-secondary dropdown-toggle">
+        <select name="{{ form.gen_specification.name }}" class="btn btn-secondary dropdown-toggle">
             <option class="dropdown-item">Select Specification</option>
-            {% for value, display in form.specification.field.choices %}
+            {% for value, display in form.gen_specification.field.choices %}
                 {% if value %}
                     <option class="dropdown-item" value="{{ value }}">{{ display }}</option>
                 {% endif %}
@@ -22,7 +22,7 @@
 
     <div class="list-group list-group-flush">
         {% for material in materials  %}
-            <a href="/mpct/check_certificate/{{material.specification.name}}__Gr{{material.grade}}/{{material.id}}" class="list-group-item list-group-item-action">Сheck certificate for {{material}}</a>
+            <a href="/mpct/check_certificate/{{material.gen_specification.name}}__Gr{{material.gen_grade}}/{{material.id}}" class="list-group-item list-group-item-action">Сheck certificate for {{material}}</a>
         {% endfor %}
 
     </div>

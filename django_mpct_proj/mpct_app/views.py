@@ -18,9 +18,9 @@ def home_view(request):
         form = SelectSpecificationForm(request.POST) # get data from the form
         
         if form.is_valid():
-            value = form.cleaned_data["specification"]
+            value = form.cleaned_data["gen_specification"]
             print(value)
-            materials = Material.objects.filter(specification=value).all()  # show filtered materilas based selected spec
+            materials = Material.objects.filter(gen_specification=value).all()  # show filtered materilas based selected spec
 
     context = {
         'form': form,
@@ -126,9 +126,30 @@ class MaterialCreateView(CreateView):
 
 def register_material(request):
     form = RegisterMaterialForm()
+
+    if request.method == 'POST':
+        form = RegisterMaterialForm(request.POST)
+        if form.is_valid(): # if fields are filled out correctly.
+            form.save()
+            print(form.cleaned_data)
+            return render(request, "mpct_app/home.html")
+
+
     context = {
         'form': form,
     }
+
+
+
+    # just to c heck
+    # methods = [method for method in dir(form) if callable(getattr(form, method))]
+    # print(methods)
+
+    # for field in form:
+    #      if "chem_" in field.name:              
+    #           print(field.label_tag)
+    #           print(field)
+
     return render(request, "mpct_app/register_material.html", context=context)
     # in HTML: {% for key, value in  field_value_dict_gen.items %}
 

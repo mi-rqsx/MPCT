@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'widget_tweaks',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -78,10 +79,15 @@ WSGI_APPLICATION = 'django_mpct_proj.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": 'mpct', # I crearted new DB in postgre pgAdmin4
+        "USER": 'mpct',
+        "PASSWORD": 'Weldex_2017',
+        "HOST": 'localhost',
+        "PORT": '5432',
     }
 }
+
 
 
 # Password validation

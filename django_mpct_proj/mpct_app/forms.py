@@ -5,7 +5,7 @@ from .models import Material, Certificate
 class SelectSpecificationForm(forms.ModelForm):
     class Meta:
         model = Material
-        fields = ["specification"]
+        fields = ["gen_specification"]
 
 
 class CheckCertificate(forms.ModelForm):

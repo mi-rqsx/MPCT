@@ -1,0 +1,15 @@
+{% for field in form %}
+    <tr>  
+            
+            {% if "chem_" in field.name and not "_min" in field.name %}
+    {% comment %} <td>{{field.label_tag}}</td> {% endcomment %}
+    {% comment %} <td>{{field}}</td> {% endcomment %}
+        <td><input placeholder="{{field.label}}" type="number" name="{{field.name}}" min="0" step="0.0001" id="id_{{field.name}}"></td>
+        {% endif %}
+
+            {% if "chem_" in field.name and "_min" in field.name %}
+        <td><input placeholder="{{field.label}}" type="number" name="{{field.name}}" min="0" step="0.0001" id="id_{{field.name}}"></td>
+        {% endif %}
+        
+    </tr>
+{% endfor %}

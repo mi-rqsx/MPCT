@@ -74,7 +74,6 @@ class BaseChemistry(models.Model):
         abstract = True
 
 
-# base template
 class BaseMechanical(models.Model):
 
     STRESS_UNITS = (
@@ -121,17 +120,19 @@ class BaseMechanical(models.Model):
 
 
 class BaseSupplementary(models.Model):
-    supp_nace = models.BinaryField(verbose_name='NACE', null=True, blank=True) # add NACE spec
-    supp_hic = models.BinaryField(verbose_name='Supplementary HIC test', null=True, blank=True) # add NACE spec
-    supp_dwtt = models.BinaryField(verbose_name='Drop Weight  Tear Test', null=True, blank=True) # add spec
-    supp_fpbt =  models.BinaryField(verbose_name='Four Point Bend test', null=True, blank=True) # add ASTM spec
-    supp_ssc =  models.BinaryField(verbose_name='Sulfide Stress Corrosion test', null=True, blank=True) # add ASTM spec
-    supp_mech_toughness_single = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
-    supp_mech_toughness_mean = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Aver.', null=True, blank=True)
+    supp_nace = models.BooleanField(verbose_name='NACE MR0175', default=True)
+    supp_wst2004 = models.BooleanField(verbose_name='W-ST-2004, TCO', default=True)
+    supp_lst2009 = models.BooleanField(verbose_name='L-ST-2009, TCO', default=False)
+    supp_hic = models.BooleanField(verbose_name='HIC test', default=False) # 
+    supp_dwtt = models.BooleanField(verbose_name='Drop Weight  Tear Test', default=False) # add spec
+    supp_fpbt =  models.BooleanField(verbose_name='Four Point Bend test', default=False) # add ASTM spec
+    supp_ssc =  models.BooleanField(verbose_name='Sulfide Stress Corrosion test', default=False) # add ASTM spec
+    # supp_mech_toughness_single = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Min.', null=True, blank=True)
+    # supp_mech_toughness_mean = models.PositiveIntegerField(verbose_name='Supplementary Impact Test, Aver.', null=True, blank=True)
 
     class Meta:
         abstract = True
-    
+
 #-----------------------------------------------------------------
 
 class Specification(models.Model):
@@ -152,17 +153,23 @@ class MaterialType(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    class Meta:
+        abstract = False
+        db_table = 'Type Material'
+        verbose_name = 'Type Material'
+
 class Material(BaseChemistry, BaseMechanical, BaseSupplementary):
-    material_type = models.ForeignKey('MaterialType', on_delete=models.RESTRICT) 
-    specification = models.ForeignKey('Specification',on_delete=models.RESTRICT) # e.g., ASTM A516
-    grade = models.CharField(max_length=100)
+    gen_specification = models.ForeignKey(to=Specification, verbose_name='Specification', on_delete=models.RESTRICT) # e.g., ASTM A516
+    gen_grade = models.CharField(verbose_name='Grade', max_length=100)
+    gen_material_type = models.ForeignKey(to=MaterialType, verbose_name='Type of material', on_delete=models.RESTRICT)
 
     class Meta:
         abstract = False
-        
+        db_table = 'Material'
+        verbose_name = 'Material'
 
     def __str__(self):
-        return f"{self.specification} Gr. {self.grade}"
+        return f"{self.gen_specification} Gr. {self.gen_grade}"
 
 
 class Certificate(BaseChemistry, BaseMechanical, BaseSupplementary):
@@ -175,9 +182,14 @@ class Certificate(BaseChemistry, BaseMechanical, BaseSupplementary):
     material = models.ForeignKey('Material', on_delete=models.RESTRICT) # probably, it's worth to change "on_delete" to something that allows to save old data, and NULL new data
     acceptance_status = models.BooleanField()
     comment = models.TextField(blank=True)
-    
+
     def __str__(self) :
         return f"{self.heat_number}, {self.material}"
-    
+
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in Certificate._meta.fields]
+
+    class Meta:
+        abstract = False
+        db_table = 'Certificate'
+        verbose_name = 'Certificate'

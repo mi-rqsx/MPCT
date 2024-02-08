@@ -1,73 +1,108 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load widget_tweaks %}
 
 {% block content %}
 
-<h1>Register a new material and its requirements</h1>
-
-
 <form method="POST">
 {% csrf_token %}
-{% comment %} <div class="container text-center"> {% endcomment %}
-    <div class="row align-items-start text-center">
-            
-                <div class="col">
-                    <h2>Chemistry</h2>
-                    <div>
-                        <h3>Chem form data</h3>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Parameter</th>
-                                        <th scope="col">Value</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                {% for field in form %}
-                                    {% if "chem_" in field.name %}
-                                        <tr>      
-                                            <td>{{field.label_tag}}</td>
-                                            <td>{{field}}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>    
-                    </div>
-                </div>
-
-                <div class="col">
-                    <h2>Mechanical</h2>
-                    <div>
-                        <h3>Chem form data</h3>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Parameter</th>
-                                    <th scope="col">Value</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                            {% for field in form %}
-                                {% if "mech_" in field.name or "supp_" in field.name%}
-                                    <tr>      
-                                        <td>{{field.label_tag}}</td>
-                                        <td>{{field}}</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                            </tbody>
-                        </table> 
-                    </div>
-                </div>
-            
-        <input type="submit" value="Register new material">
-        
+    <!--New material registration form-->
+    <div class="row align-items-center text-center">
+        <div class="col-2">
+            <button class="btn btn-outline-success text-white form-control" type="submit">Submit</button>
+        </div>
+        <div class="col-sm">
+            <h2>New Material Registration Form</h2>
+        </div>
     </div>
-  {% comment %} </div> {% endcomment %}
+
+    {% comment %} class="form-control" {% endcomment %}
+    <div class="row align-items-start text-center">
+        
+        <!--Mechanical col-->
+        <div class="col">
+            <table class="table form-control">
+            <tbody>
+                {% for field in form %}
+                    {% if "gen_" in field.name %}
+                        <tr>      
+                            <td>{{field.label_tag}}</td>
+                            <td>{{field}}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+            </table>
+
+
+            
+            <div class="form-control">
+                <h3>Mechanical</h3>
+                <table class="table">
+
+                    <thead class="text-center">
+                        <tr>
+                            <th scope="col">Parameter</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for field in form %}
+                        {% if "mech_" in field.name or "supp_" in field.name %}
+                            <tr>      
+                                <td>{{field.label_tag}}</td>
+                                <td>{{field}}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+
+                </table> 
+            </div>
+        </div>
+
+        
+            <!--Chemistry row-->
+        <div class="col form-control">
+
+            <h3>Chemistry</h3>
+            <div class="row align-items-start text-center">
+    
+                <table class="table col">
+                    <tbody>
+                    {% for field in form %}    
+                    <tr>  
+                        {% if "chem_" in field.name and not "min" in field.name %}
+                            <td>{{field.label_tag}}</td>
+                            <td><input placeholder="{{field.label}}" type="number" name="{{field.name}}" min="0" step="0.0001" id="id_{{field.name}}"></td>
+                        {% endif %}  
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <table class="table col">
+                    <tbody>
+                    {% for field in form %}    
+                    <tr>  
+                        {% if "chem_" in field.name and "min" in field.name %}
+                            <td>{{field.label_tag}}</td>    
+                            <td><input placeholder="{{field.label}}" type="number" name="{{field.name}}" min="0" step="0.0001" id="id_{{field.name}}"></td>
+                        {% endif %}  
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                    
+
+        </div>
+
+                
+            
+    </div>
 
 </form>
 
